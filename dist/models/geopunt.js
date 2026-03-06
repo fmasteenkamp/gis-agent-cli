@@ -1,0 +1,2 @@
+// --- Geopunt Location API ---
+export {};
