@@ -4,6 +4,7 @@ import { buildAddressCommand } from './commands/capakey/search.js';
 import { buildCaPaKeyCommand } from './commands/capakey/lookup.js';
 import { buildBufferCommand } from './commands/buffer.js';
 import { buildConvertCommand } from './commands/convert.js';
+import { buildNearbyCommand } from './commands/nearby.js';
 
 const program = new Command()
   .name('gis-tools')
@@ -14,5 +15,6 @@ program.addCommand(buildAddressCommand());
 program.addCommand(buildCaPaKeyCommand());
 program.addCommand(buildBufferCommand());
 program.addCommand(buildConvertCommand());
+program.addCommand(buildNearbyCommand());
 
 program.parse();

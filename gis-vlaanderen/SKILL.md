@@ -2,13 +2,14 @@
 name: gis-vlaanderen
 description: >
   Flemish GIS utilities for address geocoding, parcel (CaPaKey) lookup, reverse geocoding,
-  spatial buffer queries, and format conversion using the Vlaanderen/Geopunt APIs via the `gis-tools` CLI.
-  Use this skill whenever the user asks about Belgian/Flemish addresses, cadastral parcels,
-  CaPaKey codes, geocoding in Flanders, proximity/buffer searches, or needs to find features
-  near a location in Belgium. Also trigger when the user mentions Geopunt, CaPaKey, Lambert72,
-  kadaster, perceelnummer, GRB, or any Flemish GIS data. Supports KML, GeoJSON, WKT, and Google Maps URL output.
+  buffer geometry, nearby feature search, and format conversion using Vlaanderen/Geopunt APIs
+  via the `gis-tools` CLI. Use this skill whenever the user asks about Belgian/Flemish addresses,
+  cadastral parcels, CaPaKey codes, geocoding in Flanders, proximity searches, bus/tram stops,
+  forests, hunting grounds, or needs to find features near a location in Belgium. Also trigger
+  when the user mentions Geopunt, CaPaKey, Lambert72, kadaster, perceelnummer, De Lijn, haltes,
+  bushalte, bos, jacht, or any Flemish GIS/WFS data. Supports KML, GeoJSON, WKT, and Google Maps URL output.
   Werkt ook in het Nederlands — activeer bij vragen over adressen, percelen, kadaster,
-  bufferanalyse of GIS-gegevens in Vlaanderen.
+  bufferanalyse, bushaltes, bossen, jachtgebieden of GIS-gegevens in Vlaanderen.
 ---
 
 # `gis-tools` CLI
@@ -29,6 +30,7 @@ Run with: `gis-tools` (installed globally).
 | `address interactive` | `-f`(table\|json) `--crs` | Interactive REPL with autocomplete |
 | `capakey lookup <capakey>` | `-f` `-g` | Look up parcel by CaPaKey |
 | `buffer <location> <radius>` | `-f` `--crs` | Generate buffer polygon around address/coords |
+| `nearby <layer> <location> [radius]` | `-f` `-n` `--crs` | Find WFS features near address/coords |
 | `convert <file>` | `-f` `--crs` | Convert GeoJSON to another format |
 
 ## Options
@@ -55,6 +57,23 @@ Note: `capakey lookup` always shows centroid coordinates. Use `-g` for full poly
 - `-f` — output format: `geojson` (default), `wkt`, `kml`
 - `--crs` — output CRS: `31370` (default) or `4326`
 - Returns a single buffer polygon (circle) as GeoJSON FeatureCollection, WKT, or KML
+
+### Nearby options
+- `<layer>` — WFS layer to query (see table below)
+- `<location>` — address string or `"x,y"` Lambert72 coordinates (use `--crs 4326` for lat,lon)
+- `[radius]` — search radius in meters (default: 500)
+- `-f` — output format: `table` (default), `json`, `geojson`, `kml`
+- `-n, --max <n>` — max features to return (default: 50)
+- `-f url` outputs Google Maps links (point features only)
+
+### Nearby layers
+| Layer | Description | `--year` |
+|-------|-------------|----------|
+| `haltes` | De Lijn bus/tram/belbus stops | — |
+| `bos` | Forest areas (Bosreferentielaag 2000) | — |
+| `jacht` | Hunting grounds (Jachtterreinen) | — |
+| `landbouw` | Agricultural parcels (crop type) | — |
+| `landgebruik` | Historical land use | `1778`, `1873`, `1969` |
 
 ### Convert options
 - `<file>` — input GeoJSON file (FeatureCollection, Feature, or bare Geometry)
@@ -85,6 +104,11 @@ gis-tools address batch addresses.txt -f json -c -g
 gis-tools buffer "Veldstraat 1, Gent" 1000 -f geojson --crs 4326
 gis-tools buffer "104683,193910" 500 -f wkt
 gis-tools buffer "Veldstraat 1, Gent" 500 -f kml
+gis-tools nearby haltes "Veldstraat 1, Gent" 500
+gis-tools nearby jacht "Korenlei 1, Gent" 5000 -f json
+gis-tools nearby bos "Brugge" 3000 -f geojson --crs 4326
+gis-tools nearby landgebruik "Veldstraat 1, Gent" 200 --year 1778
+gis-tools nearby landgebruik "Grote Markt, Antwerpen" 500 --year 1969 -f json
 gis-tools convert parcels.geojson -f kml
 gis-tools convert parcels.geojson -f wkt
 gis-tools convert lambert.geojson -f geojson --crs 4326
