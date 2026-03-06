@@ -11,6 +11,9 @@ export interface LocationResult {
     };
     LocationType: string;
 }
+export interface SuggestionResponse {
+    SuggestionResult: string[];
+}
 export interface ParcelResponse {
     capakey: string;
     municipalityCode: string;
@@ -27,6 +30,16 @@ export interface ParcelResponse {
         shape: string;
     };
 }
+export interface Coordinates {
+    lambert72: {
+        x: number;
+        y: number;
+    };
+    wgs84: {
+        lat: number;
+        lon: number;
+    };
+}
 export interface CaPaKeySearchResult {
     formattedAddress: string;
     locationType: string;
@@ -34,6 +47,8 @@ export interface CaPaKeySearchResult {
     municipality: string;
     section: string;
     perceelnummer: string;
+    coordinates?: Coordinates;
+    geometry?: unknown;
 }
 export interface CaPaKeyLookupResult {
     capaKey: string;
@@ -43,6 +58,20 @@ export interface CaPaKeyLookupResult {
     perceelnummer: string;
     grondnummer: string;
     addresses: string[];
+    centroid?: {
+        x: number;
+        y: number;
+    };
     geometry?: unknown;
 }
-export type OutputFormat = 'table' | 'json' | 'geojson' | 'wkt';
+export interface ReverseResult {
+    formattedAddress: string;
+    locationType: string;
+    coordinates: Coordinates;
+    capaKey?: string;
+    municipality?: string;
+    section?: string;
+    perceelnummer?: string;
+}
+export type OutputFormat = 'table' | 'json' | 'geojson' | 'wkt' | 'kml' | 'url';
+export type CRS = '31370' | '4326';

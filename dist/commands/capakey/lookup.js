@@ -8,15 +8,15 @@ export function buildCaPaKeyCommand() {
     capakey
         .command('lookup <capakey>')
         .description('Look up parcel details by CaPaKey (e.g. 41342B0558/00V000)')
-        .option('-f, --format <format>', 'Output format: table|json|geojson|wkt', 'table')
+        .option('-f, --format <format>', 'Output format: table|json|geojson|wkt|kml', 'table')
         .option('-g, --geometry', 'Include GeoJSON geometry in output')
         .action(async (capakey, opts) => {
         const format = opts.format;
-        if (!['table', 'json', 'geojson', 'wkt'].includes(format)) {
-            console.error(chalk.red('Error: --format must be "table", "json", "geojson", or "wkt"'));
+        if (!['table', 'json', 'geojson', 'wkt', 'kml'].includes(format)) {
+            console.error(chalk.red('Error: --format must be "table", "json", "geojson", "wkt", or "kml"'));
             process.exit(1);
         }
-        const includeGeometry = opts.geometry || format === 'geojson' || format === 'wkt';
+        const includeGeometry = opts.geometry || format === 'geojson' || format === 'wkt' || format === 'kml';
         const spinner = ora('Looking up CaPaKey...').start();
         try {
             const result = await lookupCaPaKey(capakey, includeGeometry);
