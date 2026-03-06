@@ -138,6 +138,38 @@ gis-tools buffer "Veldstraat 1, Gent" 500 -f kml
 
 Returns a single polygon representing the buffer zone. Buffer geometry is calculated in Lambert72 using JSTS.
 
+### `nearby <layer> <location> [radius]`
+
+Find features from Flemish WFS services near an address or coordinates.
+
+```bash
+gis-tools nearby haltes "Veldstraat 1, Gent" 500
+gis-tools nearby jacht "Korenlei 1, Gent" 5000 -f json
+gis-tools nearby bos "Brugge" 3000 -f geojson --crs 4326
+gis-tools nearby haltes "104683,193910" 300 -f kml
+gis-tools nearby landgebruik "Veldstraat 1, Gent" 200 --year 1778
+gis-tools nearby landgebruik "Grote Markt, Antwerpen" 500 --year 1969 -f json
+```
+
+| Option | Description | Default |
+|---|---|---|
+| `<layer>` | WFS layer to query (see below) | — |
+| `[radius]` | Search radius in meters | `500` |
+| `-f, --format <fmt>` | `table` \| `json` \| `geojson` \| `kml` | `table` |
+| `-n, --max <n>` | Max features to return | `50` |
+| `--crs <crs>` | Coordinate system | `31370` |
+| `--year <year>` | Year variant (for layers with historical data) | — |
+
+**Available layers:**
+
+| Layer | Description | `--year` |
+|-------|-------------|----------|
+| `haltes` | De Lijn bus/tram/belbus stops | — |
+| `bos` | Forest areas (Bosreferentielaag 2000) | — |
+| `jacht` | Hunting grounds (Jachtterreinen) | — |
+| `landbouw` | Agricultural parcels with crop data | — |
+| `landgebruik` | Historical land use | `1778`, `1873`, `1969` |
+
 ### `convert <file>`
 
 Convert a GeoJSON file to another format, with optional CRS transform.
@@ -179,6 +211,11 @@ This CLI uses the following public Vlaanderen services:
 
 - **Geolocation API** — `https://geo.api.vlaanderen.be/geolocation` — address geocoding, suggestions, reverse geocoding
 - **CaPaKey API v2** — `https://geo.api.vlaanderen.be/capakey/v2` — parcel lookup by coordinates or CaPaKey
+- **De Lijn Haltes WFS** — `https://geo.api.vlaanderen.be/Haltes/wfs` — public transit stop locations
+- **Bosref WFS** — `https://geo.api.vlaanderen.be/Bosref/wfs` — forest reference data
+- **Jacht WFS** — `https://geo.api.vlaanderen.be/Jacht/wfs` — hunting ground boundaries
+- **Landbgebrperc WFS** — `https://geo.api.vlaanderen.be/Landbgebrperc/wfs` — agricultural parcels and crop data
+- **HistLandgebruik WFS** — `https://geo.api.vlaanderen.be/HistLandgebruik/wfs` — historical land use (1778, 1873, 1969)
 
 ## License
 
