@@ -170,6 +170,59 @@ gis-tools nearby landgebruik "Grote Markt, Antwerpen" 500 --year 1969 -f json
 | `landbouw` | Agricultural parcels with crop data | — |
 | `landgebruik` | Historical land use | `1778`, `1873`, `1969` |
 
+### `overlap [layer] <location> [radius]`
+
+Check overlap with ANB (Agentschap Natuur en Bos) environmental and policy layers. Creates a buffer polygon around a location and checks for intersections.
+
+```bash
+gis-tools overlap --list                                    # list all 53 layers
+gis-tools overlap --search habitat                          # search layers by keyword
+gis-tools overlap beheerregio "Veldstraat 1, Gent" 100      # check single layer
+gis-tools overlap habitat "Brugge" 500 -f json              # JSON output
+gis-tools overlap gewestplan "104683,193910" 200             # coordinates input
+gis-tools overlap erfgoed "Grote Markt, Antwerpen" 100      # heritage check
+gis-tools overlap --all "Veldstraat 1, Gent" 50             # check ALL layers
+```
+
+| Option | Description | Default |
+|---|---|---|
+| `[layer]` | Layer keyword (use `--list` to see all) | — |
+| `[radius]` | Buffer radius in meters | `50` |
+| `-f, --format <fmt>` | `table` \| `json` | `table` |
+| `--crs <crs>` | Input coordinate system | `31370` |
+| `--list` | List all available overlap layers | — |
+| `--search <query>` | Search layers by keyword/description | — |
+| `--all` | Check all overlap layers at once | — |
+
+**Layer categories** (53 total — use `--list` for full list):
+
+| Category | Keywords |
+|---|---|
+| Administrative | `gemeente`, `provincie`, `beheerregio`, `boswachterijen`, `bosgroep` |
+| Nature/conservation | `habitat`, `vogelrichtlijn`, `ramsar`, `venivon`, `vnr`, `enr`, `bosreservaten`, `sigma` |
+| Policy/planning | `beheerplan`, `natuurrichtplan`, `natuurdoelenlaag`, `gewestplan`, `pas`, `sbp` |
+| Heritage | `erfgoed`, `beschermdarcheologisch`, `beschermdmonument`, `beschermdchlandschap` |
+| Land use | `bwk`, `bwkwaarde`, `boswaardering`, `bodemkaart`, `historischgrasland`, `duinen` |
+
+### `distance <locationA> <locationB>`
+
+Calculate the minimum distance between two locations or geometries (closest point to closest point).
+
+```bash
+gis-tools distance "Veldstraat 1, Gent" "Korenmarkt 1, Gent"
+gis-tools distance "Gent" "Brugge" -f json
+gis-tools distance "104683,193910" "105000,194000"
+gis-tools distance @poly1.geojson @poly2.geojson
+gis-tools distance "Veldstraat 1, Gent" @area.geojson
+```
+
+| Option | Description | Default |
+|---|---|---|
+| `-f, --format <fmt>` | `text` \| `json` | `text` |
+| `--crs <crs>` | Input coordinate system | `31370` |
+
+Each location can be an address, `"x,y"` coordinates, inline GeoJSON string, or `@file.geojson`. Distance is calculated in Lambert72 using JSTS DistanceOp (result in meters). Output includes nearest points in both Lambert72 and WGS84.
+
 ### `convert <file>`
 
 Convert a GeoJSON file to another format, with optional CRS transform.
@@ -216,6 +269,7 @@ This CLI uses the following public Vlaanderen services:
 - **Jacht WFS** — `https://geo.api.vlaanderen.be/Jacht/wfs` — hunting ground boundaries
 - **Landbgebrperc WFS** — `https://geo.api.vlaanderen.be/Landbgebrperc/wfs` — agricultural parcels and crop data
 - **HistLandgebruik WFS** — `https://geo.api.vlaanderen.be/HistLandgebruik/wfs` — historical land use (1778, 1873, 1969)
+- **ANB Overlap API** — `https://gisoverlap-api-ontwikkel.natuurenbos.be` — environmental/policy layer intersection checks (53 layers)
 
 ## License
 

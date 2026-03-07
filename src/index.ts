@@ -5,6 +5,8 @@ import { buildCaPaKeyCommand } from './commands/capakey/lookup.js';
 import { buildBufferCommand } from './commands/buffer.js';
 import { buildConvertCommand } from './commands/convert.js';
 import { buildNearbyCommand } from './commands/nearby.js';
+import { buildOverlapCommand } from './commands/overlap.js';
+import { buildDistanceCommand } from './commands/distance.js';
 
 const program = new Command()
   .name('gis-tools')
@@ -16,5 +18,7 @@ program.addCommand(buildCaPaKeyCommand());
 program.addCommand(buildBufferCommand());
 program.addCommand(buildConvertCommand());
 program.addCommand(buildNearbyCommand());
+program.addCommand(buildOverlapCommand());
+program.addCommand(buildDistanceCommand());
 
 program.parse();

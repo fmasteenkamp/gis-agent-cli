@@ -2,9 +2,10 @@ import type {
   CaPaKeySearchResult, CaPaKeyLookupResult, LocationResult,
   LocationResponse, ParcelResponse, SuggestionResponse, ReverseResult, CRS,
 } from '../models/geopunt.js';
+import services from '../data/services.json' with { type: 'json' };
 
-const GEOLOCATION_BASE = 'https://geo.api.vlaanderen.be/geolocation';
-const CAPAKEY_BASE = 'https://geo.api.vlaanderen.be/capakey/v2';
+const GEOLOCATION_BASE = services.geolocation;
+const CAPAKEY_BASE = services.capakey;
 
 async function geocode(address: string, count: number): Promise<LocationResult[]> {
   const url = `${GEOLOCATION_BASE}/location?q=${encodeURIComponent(address)}&c=${count}`;

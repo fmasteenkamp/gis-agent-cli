@@ -1,0 +1,5 @@
+{
+  "geolocation": "https://geo.api.vlaanderen.be/geolocation",
+  "capakey": "https://geo.api.vlaanderen.be/capakey/v2",
+  "overlap": "https://gisoverlap-api-ontwikkel.natuurenbos.be"
+}

@@ -1,5 +1,6 @@
-const GEOLOCATION_BASE = 'https://geo.api.vlaanderen.be/geolocation';
-const CAPAKEY_BASE = 'https://geo.api.vlaanderen.be/capakey/v2';
+import services from '../data/services.json' with { type: 'json' };
+const GEOLOCATION_BASE = services.geolocation;
+const CAPAKEY_BASE = services.capakey;
 async function geocode(address, count) {
     const url = `${GEOLOCATION_BASE}/location?q=${encodeURIComponent(address)}&c=${count}`;
     const res = await fetch(url, { headers: { Accept: 'application/json' } });
