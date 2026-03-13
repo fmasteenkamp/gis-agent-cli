@@ -1,0 +1,42 @@
+{
+  "skill_name": "anb-gis",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "I need to check if a parcel near Brugge station overlaps with any nature reserves or habitat areas. Can you check beheerregio and habitat for coordinates 70000,212000?",
+      "expected_output": "Should use anb-gis overlap for beheerregio and habitat layers with the given coordinates",
+      "assertions": [
+        { "type": "contains_command", "text": "anb-gis overlap", "description": "Uses anb-gis overlap command" },
+        { "type": "output_contains", "text": "beheerregio", "description": "Checks beheerregio layer" },
+        { "type": "output_contains", "text": "habitat", "description": "Checks habitat layer" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "welke overlap lagen zijn er beschikbaar voor erfgoed?",
+      "expected_output": "Should use anb-gis overlap --search erfgoed to list heritage-related overlap layers",
+      "assertions": [
+        { "type": "contains_command", "text": "anb-gis overlap", "description": "Uses anb-gis overlap command" },
+        { "type": "output_contains", "text": "erfgoed", "description": "Shows erfgoed layers" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "check if this polygon overlaps with any habitat or VEN/IVON zones: @parcel.geojson",
+      "expected_output": "Should use anb-gis overlap with @file syntax for habitat and venivon layers",
+      "assertions": [
+        { "type": "contains_command", "text": "anb-gis overlap", "description": "Uses anb-gis overlap command" },
+        { "type": "output_contains", "text": "@parcel.geojson", "description": "Uses @file syntax for GeoJSON input" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "list all ANB overlap layers related to nature policy",
+      "expected_output": "Should use anb-gis overlap --search or --list to find nature policy layers",
+      "assertions": [
+        { "type": "contains_command", "text": "anb-gis overlap", "description": "Uses anb-gis overlap command" },
+        { "type": "output_contains_one_of", "texts": ["--list", "--search"], "description": "Uses --list or --search flag" }
+      ]
+    }
+  ]
+}

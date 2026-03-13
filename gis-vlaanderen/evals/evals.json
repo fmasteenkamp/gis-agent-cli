@@ -4,65 +4,46 @@
     {
       "id": 1,
       "prompt": "what is the capakey for Veldstraat 1 in Gent?",
-      "expected_output": "Should use gis-tools address search to find the CaPaKey for the address",
+      "expected_output": "Should use gis-geopunt address search to find the CaPaKey for the address",
       "assertions": [
-        { "type": "contains_command", "text": "gis-tools address search", "description": "Uses address search command" },
+        { "type": "contains_command", "text": "gis-geopunt address search", "description": "Uses address search command" },
         { "type": "output_contains", "text": "Veldstraat", "description": "Includes the searched address" }
       ]
     },
     {
       "id": 2,
       "prompt": "geef me de dichtstbijzijnde bushalte bij Korenmarkt 1 Gent",
-      "expected_output": "Should use gis-tools nearby haltes to find nearby transit stops",
+      "expected_output": "Should use gis-geopunt nearby haltes to find nearby transit stops",
       "assertions": [
-        { "type": "contains_command", "text": "gis-tools nearby haltes", "description": "Uses nearby haltes command" },
+        { "type": "contains_command", "text": "gis-geopunt nearby haltes", "description": "Uses nearby haltes command" },
         { "type": "output_contains", "text": "Korenmarkt", "description": "Geocodes the address" }
       ]
     },
     {
       "id": 3,
-      "prompt": "I need to check if a parcel near Brugge station overlaps with any nature reserves or habitat areas. Can you check beheerregio and habitat for coordinates 70000,212000?",
-      "expected_output": "Should use gis-tools overlap for beheerregio and habitat layers with the given coordinates",
-      "assertions": [
-        { "type": "contains_command", "text": "gis-tools overlap", "description": "Uses overlap command" },
-        { "type": "output_contains", "text": "beheerregio", "description": "Checks beheerregio layer" },
-        { "type": "output_contains", "text": "habitat", "description": "Checks habitat layer" }
-      ]
-    },
-    {
-      "id": 4,
       "prompt": "how far is it from Grote Markt Antwerpen to Grote Markt Brussel?",
-      "expected_output": "Should use gis-tools distance to calculate distance between the two addresses",
+      "expected_output": "Should use gis-geopunt distance to calculate distance between the two addresses",
       "assertions": [
-        { "type": "contains_command", "text": "gis-tools distance", "description": "Uses distance command" },
+        { "type": "contains_command", "text": "gis-geopunt distance", "description": "Uses distance command" },
         { "type": "output_contains", "text": "km", "description": "Shows distance result" }
       ]
     },
     {
-      "id": 5,
-      "prompt": "welke overlap lagen zijn er beschikbaar voor erfgoed?",
-      "expected_output": "Should use gis-tools overlap --search erfgoed to list heritage-related overlap layers",
-      "assertions": [
-        { "type": "contains_command", "text": "gis-tools overlap", "description": "Uses overlap command" },
-        { "type": "output_contains", "text": "erfgoed", "description": "Shows erfgoed layers" }
-      ]
-    },
-    {
-      "id": 6,
+      "id": 4,
       "prompt": "show me all the hunting grounds within 5km of Korenlei 1 Gent as geojson in WGS84",
-      "expected_output": "Should use gis-tools nearby jacht with geojson format and --crs 4326",
+      "expected_output": "Should use gis-geopunt nearby jacht with geojson format and --crs 4326",
       "assertions": [
-        { "type": "contains_command", "text": "gis-tools nearby jacht", "description": "Uses nearby jacht command" },
+        { "type": "contains_command", "text": "gis-geopunt nearby jacht", "description": "Uses nearby jacht command" },
         { "type": "output_contains", "text": "--crs 4326", "description": "Uses WGS84 coordinate system" },
         { "type": "output_contains", "text": "-f geojson", "description": "Uses GeoJSON output format" }
       ]
     },
     {
-      "id": 7,
+      "id": 5,
       "prompt": "what is the distance between two parcels I have as geojson files: poly1.geojson and poly2.geojson",
-      "expected_output": "Should use gis-tools distance with @file syntax for both inputs",
+      "expected_output": "Should use gis-geopunt distance with @file syntax for both inputs",
       "assertions": [
-        { "type": "contains_command", "text": "gis-tools distance", "description": "Uses distance command" },
+        { "type": "contains_command", "text": "gis-geopunt distance", "description": "Uses distance command" },
         { "type": "output_contains", "text": "@", "description": "Uses @file syntax for GeoJSON input" }
       ]
     }
