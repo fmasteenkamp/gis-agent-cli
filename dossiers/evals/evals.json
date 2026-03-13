@@ -1,0 +1,41 @@
+{
+  "skill_name": "dossiers",
+  "evals": [
+    {
+      "id": 1,
+      "prompt": "list all natuurbeheerplannen",
+      "expected_output": "Should use dossiers nbp list",
+      "assertions": [
+        { "type": "contains_command", "text": "dossiers", "description": "Uses dossiers CLI" },
+        { "type": "output_contains", "text": "nbp list", "description": "Uses nbp list subcommand" }
+      ]
+    },
+    {
+      "id": 2,
+      "prompt": "get the natuurbeheerplan with id 3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "expected_output": "Should use dossiers nbp get with the UUID",
+      "assertions": [
+        { "type": "contains_command", "text": "nbp get", "description": "Uses nbp get subcommand" },
+        { "type": "output_contains", "text": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "description": "Passes the UUID" }
+      ]
+    },
+    {
+      "id": 3,
+      "prompt": "what are the possible status transitions for plan 3fa85f64-5717-4562-b3fc-2c963f66afa6?",
+      "expected_output": "Should use dossiers nbp status actions to check valid transitions",
+      "assertions": [
+        { "type": "contains_command", "text": "nbp status actions", "description": "Uses status actions subcommand" },
+        { "type": "output_contains", "text": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "description": "Passes the plan ID" }
+      ]
+    },
+    {
+      "id": 4,
+      "prompt": "add a note to referentie 3fa85f64-5717-4562-b3fc-2c963f66afa6 saying 'Dossier nakijken voor deadline'",
+      "expected_output": "Should use dossiers nbp notitie add with --tekst",
+      "assertions": [
+        { "type": "contains_command", "text": "nbp notitie add", "description": "Uses notitie add subcommand" },
+        { "type": "output_contains", "text": "--tekst", "description": "Passes note text via --tekst flag" }
+      ]
+    }
+  ]
+}

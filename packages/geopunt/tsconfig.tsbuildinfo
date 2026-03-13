@@ -1,0 +1,1 @@
+{"root":["./src/index.ts","./src/commands/buffer.ts","./src/commands/convert.ts","./src/commands/distance.ts","./src/commands/nearby.ts","./src/commands/capakey/lookup.ts","./src/commands/capakey/search.ts","./src/models/geopunt.ts","./src/models/wfs-layers.ts","./src/services/geopunt.ts","./src/services/wfs.ts","./src/utils/output.ts"],"version":"5.9.3"}
