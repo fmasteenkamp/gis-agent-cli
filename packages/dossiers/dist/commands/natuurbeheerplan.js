@@ -1,7 +1,7 @@
 import { Command } from 'commander';
 import ora from 'ora';
 import chalk from 'chalk';
-import { listPlannen, getPlan, getDossierByNummer, getDossierById, getStatusHistory, getPossibleActions, setStatus, getNotities, addNotitie, getMe, } from '../services/natuurbeheerplan.js';
+import { listPlannen, getPlan, getDossierByNummer, getDossierById, getStatusHistory, getPossibleActions, getNotities, getMe, } from '../services/natuurbeheerplan.js';
 function resolveToken(token) {
     const t = token ?? process.env['DOSSIERS_TOKEN'];
     if (!t) {
@@ -194,31 +194,9 @@ export function buildNatuurBeheerPlanCommand(getToken) {
             process.exit(1);
         }
     });
-    status
-        .command('set <planId> <toStatus>')
-        .description('Change the status of a plan')
-        .action(async (planId, toStatus) => {
-        const token = resolveToken(getToken());
-        const spinner = ora(`Setting status to "${toStatus}"...`).start();
-        try {
-            const data = await setStatus(planId, toStatus, token);
-            spinner.stop();
-            console.log(chalk.green('Status updated.'));
-            if (data)
-                print(data, 'table');
-        }
-        catch (err) {
-            spinner.fail('Failed');
-            console.error(chalk.red(err.message));
-            process.exit(1);
-        }
-    });
     // --- notitie ---
-    const notitie = cmd
-        .command('notitie')
-        .description('Notitie commands');
-    notitie
-        .command('list <referentieId>')
+    cmd
+        .command('notities <referentieId>')
         .description('List notities for a referentie ID')
         .option(...fmt)
         .action(async (referentieId, opts) => {
@@ -228,26 +206,6 @@ export function buildNatuurBeheerPlanCommand(getToken) {
             const data = await getNotities(referentieId, token);
             spinner.stop();
             print(data, opts.format);
-        }
-        catch (err) {
-            spinner.fail('Failed');
-            console.error(chalk.red(err.message));
-            process.exit(1);
-        }
-    });
-    notitie
-        .command('add <referentieId>')
-        .description('Add a notitie to a referentie')
-        .requiredOption('--tekst <tekst>', 'Note text')
-        .action(async (referentieId, opts) => {
-        const token = resolveToken(getToken());
-        const spinner = ora('Adding notitie...').start();
-        try {
-            const data = await addNotitie(referentieId, opts.tekst, token);
-            spinner.stop();
-            console.log(chalk.green('Notitie added.'));
-            if (data)
-                print(data, 'table');
         }
         catch (err) {
             spinner.fail('Failed');

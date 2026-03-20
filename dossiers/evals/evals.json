@@ -30,11 +30,11 @@
     },
     {
       "id": 4,
-      "prompt": "add a note to referentie 3fa85f64-5717-4562-b3fc-2c963f66afa6 saying 'Dossier nakijken voor deadline'",
-      "expected_output": "Should use dossiers nbp notitie add with --tekst",
+      "prompt": "show me the notities for referentie 3fa85f64-5717-4562-b3fc-2c963f66afa6",
+      "expected_output": "Should use dossiers nbp notities to list notes",
       "assertions": [
-        { "type": "contains_command", "text": "nbp notitie add", "description": "Uses notitie add subcommand" },
-        { "type": "output_contains", "text": "--tekst", "description": "Passes note text via --tekst flag" }
+        { "type": "contains_command", "text": "nbp notities", "description": "Uses notities subcommand" },
+        { "type": "output_contains", "text": "3fa85f64-5717-4562-b3fc-2c963f66afa6", "description": "Passes the referentie ID" }
       ]
     }
   ]

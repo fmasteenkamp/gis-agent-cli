@@ -2,10 +2,10 @@
 name: dossiers
 description: >
   Dossiers CLI for querying the ANB (Agentschap Natuur en Bos) natuurbeheerplan backoffice API.
-  Use this skill when the user asks about natuurbeheerplannen, dossiers, status changes, notities,
-  or needs to interact with the ANB backoffice. Requires a JWT token via --token or DOSSIERS_TOKEN
-  env var. Trigger on: natuurbeheerplan, NBP, dossier, backoffice, beheerplan opvragen, status
-  wijzigen, notitie, behandelaar, begunstigde, or any request to query/update ANB dossier data.
+  Use this skill when the user asks about natuurbeheerplannen, dossiers, status history, notities,
+  or needs to consult the ANB backoffice. Read-only — no modifications. Requires a JWT token via
+  --token or DOSSIERS_TOKEN env var. Trigger on: natuurbeheerplan, NBP, dossier, backoffice,
+  beheerplan opvragen, notitie, behandelaar, begunstigde, or any request to query ANB dossier data.
 ---
 
 # `dossiers` CLI
@@ -36,9 +36,7 @@ dossiers <command>
 | `nbp dossier id <id>` | Get dossier by numeric ID |
 | `nbp status history <planId>` | Status history for a plan |
 | `nbp status actions <planId>` | Possible status transitions for a plan |
-| `nbp status set <planId> <toStatus>` | Change status of a plan |
-| `nbp notitie list <referentieId>` | List notities for a reference |
-| `nbp notitie add <referentieId> --tekst <text>` | Add a notitie |
+| `nbp notities <referentieId>` | List notities for a reference |
 
 `natuurbeheerplan` can be abbreviated as `nbp`.
 
@@ -52,7 +50,7 @@ dossiers <command>
 - **UUID**: plan IDs are UUIDs, e.g. `3fa85f64-5717-4562-b3fc-2c963f66afa6`
 - **Dossier nummer**: human-readable dossier reference, e.g. `NBP-2024-001`
 - **referentieId**: used to scope notities to a specific entity
-- **toStatus**: status string as defined by the API — use `nbp status actions <planId>` to see valid transitions before calling `status set`
+- This CLI is **read-only** — no status changes, notitie creation, or other modifications
 - Token can be set once via `DOSSIERS_TOKEN` env var to avoid repeating `--token` on every call
 
 ## Examples
@@ -68,9 +66,7 @@ dossiers nbp dossier nummer NBP-2024-001
 dossiers nbp dossier id 42
 dossiers nbp status history 3fa85f64-5717-4562-b3fc-2c963f66afa6
 dossiers nbp status actions 3fa85f64-5717-4562-b3fc-2c963f66afa6
-dossiers nbp status set 3fa85f64-5717-4562-b3fc-2c963f66afa6 Goedgekeurd
-dossiers nbp notitie list 3fa85f64-5717-4562-b3fc-2c963f66afa6
-dossiers nbp notitie add 3fa85f64-5717-4562-b3fc-2c963f66afa6 --tekst "Dossier nagekeken"
+dossiers nbp notities 3fa85f64-5717-4562-b3fc-2c963f66afa6
 
 # inline token
 dossiers --token eyJ... nbp list -f json
