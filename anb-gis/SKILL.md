@@ -1,18 +1,19 @@
 ---
 name: anb-gis
 description: >
-  ANB (Agentschap Natuur en Bos) environmental and policy layer overlap analysis for Flanders via
-  the `anb-gis` CLI. Use this skill whenever the user asks about ANB environmental overlaps, nature
-  reserves, habitat areas, heritage constraints, zoning, or needs to check whether a location or
-  polygon intersects with Flemish policy/conservation layers. Trigger on: ANB, Natuur en Bos,
+  ANB (Agentschap Natuur en Bos) environmental/policy layer overlap analysis and ArcGIS MapServer
+  querying for Flanders via the `anb-gis` CLI. Use this skill whenever the user asks about ANB
+  environmental overlaps, nature reserves, habitat areas, heritage constraints, zoning, MapServer
+  queries, or needs to get GeoJSON for a natuurbeheerplan. Trigger on: ANB, Natuur en Bos,
   beheerplan, beheerregio, boswachterijen, bosgroep, habitat, vogelrichtlijn, VEN, IVON, Ramsar,
   vnr, enr, bosreservaten, sigma, natuurrichtplan, natuurdoelenlaag, ihdzoekzone, PSN, ISN, PAS,
   HAG, erfgoed, beschermdarcheologisch, beschermdmonument, beschermdchlandschap, jachtterrein,
   ruimteboekhouding, gewestplan, BWK, bodemkaart, boswaardering, bwkwaarde, sbp, vegetatiebesluit,
-  duinen, historischgrasland, landtuinbouwactiviteit, perceel, gemeente, provincie, or any ANB/
-  environmental overlap check in Flanders.
+  duinen, historischgrasland, landtuinbouwactiviteit, perceel, gemeente, provincie, mapserver,
+  globaalkader, BeheerplanId, ArcGIS, or any ANB/environmental overlap or MapServer query in Flanders.
   Werkt ook in het Nederlands — activeer bij vragen over ANB-lagen, natuurgebieden, habitatrichtlijn,
-  vogelrichtlijn, erfgoed, beschermde zones, gewestplan, bosreservaten, of overlaps met ANB-data.
+  vogelrichtlijn, erfgoed, beschermde zones, gewestplan, bosreservaten, overlaps met ANB-data, of
+  MapServer-lagen.
 ---
 
 # `anb-gis` CLI
@@ -26,6 +27,11 @@ Run with: `anb-gis` (installed globally).
 | Command | Options | Description |
 |---------|---------|-------------|
 | `overlap [layer] <location> [radius]` | `-f` `--crs` `--list` `--search` `--all` | Check ANB environmental/policy layer overlaps |
+| `mapserver fields <layerOrUrl>` | | Show fields for a MapServer layer |
+| `mapserver query <layerOrUrl>` | `--where` `--fields` `--no-geometry` `--crs` `-f` | Query features with SQL filter, returns GeoJSON |
+| `mapserver plan <beheerplanId>` | `--crs` `-f` | Get GeoJSON for a natuurbeheerplan by ID (shortcut) |
+| `mapserver --list` | `--service` | List known MapServer layers (optionally filter by service) |
+| `mapserver --search <query>` | `--service` | Search MapServer layers |
 
 ## Overlap options
 
@@ -52,6 +58,26 @@ Run with: `anb-gis` (installed globally).
 | Land use | bwk, bwkwaarde, boswaardering, bodemkaart, historischgrasland, duinen, landtuinbouwactiviteit, hag, vegetatiebesluit |
 | Other | jachtterrein, ruimteboekhouding, natuurstreefbeeld |
 
+## MapServer options
+
+- `<layerOrUrl>` — either a registered keyword (e.g. `globaalkader`) or a full ArcGIS REST URL
+- `--where <sql>` — ArcGIS SQL where clause (required for `query`)
+- `--fields <f1,f2,...>` — comma-separated field names (default: all)
+- `--no-geometry` — omit geometry from results
+- `--crs <31370|4326>` — output coordinate system (default: 31370)
+- `-f, --format` — `geojson` (default) or `json`
+- `plan` is a shortcut that queries the `globaalkader` layer by `BeheerplanId`
+
+### Known MapServer layers (use `--list` for full list)
+
+| Keyword | Service | Description | ID Field |
+|---------|---------|-------------|----------|
+| `globaalkader` | natuurbeheerplannen | Natuurbeheerplan globaal kader polygonen | BeheerplanId |
+| `perceel` | natuurbeheerplannen | Natuurbeheerplan percelen (CAPAKEY, gebruiksrechten) | BeheerplanId |
+| `printingtools` | utilities | Utilities printing tools (requires token) | — |
+
+New layers can be added to `packages/anb/src/data/mapserver-layers.json`.
+
 ## Key Concepts
 
 - **Lambert72 (31370)**: Belgian coordinates — X ~20k-300k, Y ~150k-250k
@@ -60,6 +86,7 @@ Run with: `anb-gis` (installed globally).
 - **Overlap API** may be offline outside business hours (weekends/maintenance). If a query times out, do not retry — report that the server is unavailable
 - GeoJSON input must be Polygon or MultiPolygon (FeatureCollections and Points are not accepted)
 - `--all` runs all 53 layers sequentially — only use if explicitly requested; prefer named layers
+- **When saving GeoJSON to a file**, write only the raw JSON — no markdown headers, footers, comments, or code fences. Files passed to `overlap` via `@file.geojson` or piped between commands must be valid GeoJSON, or parsing will fail
 
 ## Examples
 
@@ -77,4 +104,15 @@ anb-gis overlap habitat @parcel.geojson
 anb-gis overlap habitat @parcel-wgs84.geojson --crs 4326
 anb-gis overlap gemeente "70000,212000"
 anb-gis overlap beheerregio "70000,212000" -f json
+
+# MapServer
+anb-gis mapserver --list
+anb-gis mapserver --list --service natuurbeheerplannen
+anb-gis mapserver --list --service utilities
+anb-gis mapserver fields globaalkader
+anb-gis mapserver fields https://gis-ontwikkel.natuurenbos.be/arcgis/rest/services/.../MapServer/5
+anb-gis mapserver query globaalkader --where "BeheerplanId='abc-123'"
+anb-gis mapserver query globaalkader --where "Procesfase='Goedgekeurd'" --fields "Registratienummer,NaamNatuurbeheerplan" --crs 4326
+anb-gis mapserver plan abc-123
+anb-gis mapserver plan abc-123 --crs 4326 -f json
 ```
