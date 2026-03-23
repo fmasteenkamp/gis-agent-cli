@@ -99,6 +99,7 @@ Note: `capakey lookup` always shows centroid coordinates. Use `-g` for full poly
 - All geojson output uses FeatureCollection format
 - **Geopunt covers Flemish addresses only** — Brussels and Wallonia may not resolve. For non-Flemish locations, use Lambert72 or WGS84 coordinates directly instead of address strings
 - **nearby** results are not sorted by distance. To find the single closest feature, use `nearby` with a small radius, or combine `nearby` + `distance` to rank results
+- **When saving GeoJSON to a file**, write only the raw JSON — no markdown headers, footers, comments, or code fences. Files passed via `@file.geojson` must be valid GeoJSON, or parsing will fail
 
 ## Examples
 

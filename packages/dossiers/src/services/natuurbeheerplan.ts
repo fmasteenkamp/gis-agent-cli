@@ -17,17 +17,6 @@ async function get<T>(path: string, token: string): Promise<T> {
   return data as T;
 }
 
-async function post<T>(path: string, token: string, body: unknown): Promise<T> {
-  const res = await fetch(`${BASE}${path}`, {
-    method: 'POST',
-    headers: headers(token),
-    body: JSON.stringify(body),
-  });
-  const data = await res.json();
-  if (!res.ok) throw new Error(`${res.status} ${JSON.stringify(data)}`);
-  return data as T;
-}
-
 // --- Plans ---
 
 export async function listPlannen(token: string): Promise<unknown[]> {
@@ -58,18 +47,10 @@ export async function getPossibleActions(planId: string, token: string): Promise
   return get(`/api/v1/backoffice/status/possible-actions/${encodeURIComponent(planId)}`, token);
 }
 
-export async function setStatus(planId: string, toStatus: string, token: string): Promise<unknown> {
-  return post(`/api/v1/backoffice/status/${encodeURIComponent(planId)}`, token, { toStatus });
-}
-
 // --- Notities ---
 
 export async function getNotities(referentieId: string, token: string): Promise<unknown[]> {
   return get(`/api/v1/backoffice/notitie/referentie/${encodeURIComponent(referentieId)}`, token);
-}
-
-export async function addNotitie(referentieId: string, tekst: string, token: string): Promise<unknown> {
-  return post('/api/v1/backoffice/notitie', token, { referentieId, tekst });
 }
 
 // --- Me ---

@@ -4,7 +4,5 @@ export declare function getDossierByNummer(nummer: string, token: string): Promi
 export declare function getDossierById(id: number, token: string): Promise<unknown>;
 export declare function getStatusHistory(planId: string, token: string): Promise<unknown[]>;
 export declare function getPossibleActions(planId: string, token: string): Promise<unknown[]>;
-export declare function setStatus(planId: string, toStatus: string, token: string): Promise<unknown>;
 export declare function getNotities(referentieId: string, token: string): Promise<unknown[]>;
-export declare function addNotitie(referentieId: string, tekst: string, token: string): Promise<unknown>;
 export declare function getMe(token: string): Promise<unknown>;

@@ -1,0 +1,26 @@
+[
+  {
+    "keyword": "globaalkader",
+    "service": "natuurbeheerplannen",
+    "label": "Globaal Kader",
+    "url": "https://gis-ontwikkel.natuurenbos.be/arcgis/rest/services/Natuurbeheerplannen/Natuurbeheerplannen/MapServer/12",
+    "idField": "BeheerplanId",
+    "description": "Natuurbeheerplan globaal kader polygonen"
+  },
+  {
+    "keyword": "perceel",
+    "service": "natuurbeheerplannen",
+    "label": "Perceel",
+    "url": "https://gis-ontwikkel.natuurenbos.be/arcgis/rest/services/Natuurbeheerplannen/Natuurbeheerplannen/MapServer/8",
+    "idField": "BeheerplanId",
+    "description": "Natuurbeheerplan percelen (CAPAKEY, gebruiksrechten, deelperceel)"
+  },
+  {
+    "keyword": "printingtools",
+    "service": "utilities",
+    "label": "Printing Tools",
+    "url": "https://gis-ontwikkel.natuurenbos.be/arcgis/rest/services/Utilities/PrintingTools/MapServer/0",
+    "idField": "",
+    "description": "Utilities printing tools (requires token)"
+  }
+]
