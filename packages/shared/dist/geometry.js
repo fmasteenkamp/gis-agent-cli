@@ -1,6 +1,8 @@
 import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory.js';
 import Coordinate from 'jsts/org/locationtech/jts/geom/Coordinate.js';
 import BufferOp from 'jsts/org/locationtech/jts/operation/buffer/BufferOp.js';
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader.js';
+import GeoJSONWriter from 'jsts/org/locationtech/jts/io/GeoJSONWriter.js';
 import proj4 from 'proj4';
 const factory = new GeometryFactory();
 const LAMBERT72 = '+proj=lcc +lat_1=51.16666723333333 +lat_2=49.8333339 +lat_0=90 +lon_0=4.367486666666666 +x_0=150000.013 +y_0=5400088.438 +ellps=intl +towgs84=-106.869,52.2978,-103.724,0.3366,-0.457,1.8422,-1.2747 +units=m +no_defs';
@@ -93,6 +95,12 @@ export function toWkt(geojson) {
         default:
             throw new Error(`Unsupported geometry type: ${g.type}`);
     }
+}
+export function fromWkt(wkt) {
+    const reader = new WKTReader(factory);
+    const geom = reader.read(wkt);
+    const writer = new GeoJSONWriter();
+    return writer.write(geom);
 }
 // --- GeoJSON ---
 export function toGeoJsonFeature(geometry, properties) {

@@ -1,6 +1,8 @@
 import GeometryFactory from 'jsts/org/locationtech/jts/geom/GeometryFactory.js';
 import Coordinate from 'jsts/org/locationtech/jts/geom/Coordinate.js';
 import BufferOp from 'jsts/org/locationtech/jts/operation/buffer/BufferOp.js';
+import WKTReader from 'jsts/org/locationtech/jts/io/WKTReader.js';
+import GeoJSONWriter from 'jsts/org/locationtech/jts/io/GeoJSONWriter.js';
 import proj4 from 'proj4';
 
 type Coord = [number, number];
@@ -124,6 +126,13 @@ export function toWkt(geojson: unknown): string {
     default:
       throw new Error(`Unsupported geometry type: ${g.type}`);
   }
+}
+
+export function fromWkt(wkt: string): unknown {
+  const reader = new WKTReader(factory);
+  const geom = reader.read(wkt);
+  const writer = new GeoJSONWriter();
+  return writer.write(geom);
 }
 
 // --- GeoJSON ---

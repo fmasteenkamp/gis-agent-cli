@@ -10,11 +10,14 @@ import {
 } from '../services/natuurbeheerplan.js';
 
 function resolveToken(token: string | undefined): string {
-  const t = token ?? process.env['DOSSIERS_TOKEN'];
+  let t = token ?? process.env['DOSSIERS_TOKEN'];
   if (!t) {
     console.error(chalk.red('Error: no token provided. Use --token <jwt> or set DOSSIERS_TOKEN env var.'));
     process.exit(1);
   }
+  // Strip wrapping quotes and "Bearer " prefix if accidentally included
+  t = t.replace(/^["']+|["']+$/g, '').trim();
+  if (t.startsWith('Bearer ')) t = t.slice(7);
   return t;
 }
 
