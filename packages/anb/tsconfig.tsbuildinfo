@@ -1,1 +1,1 @@
-{"root":["./src/index.ts","./src/commands/mapserver.ts","./src/commands/overlap.ts","./src/models/mapserver-layers.ts","./src/models/overlap-layers.ts","./src/services/mapserver.ts","./src/services/overlap.ts"],"version":"5.9.3"}
+{"root":["./src/index.ts","./src/commands/mapserver.ts","./src/commands/overlap.ts","./src/commands/print.ts","./src/models/mapserver-layers.ts","./src/models/overlap-layers.ts","./src/services/mapserver.ts","./src/services/overlap.ts","./src/services/print.ts"],"version":"5.9.3"}

@@ -15,6 +15,7 @@ export declare function createBufferPolygon(x: number, y: number, radiusMeters: 
     coordinates: number[][][];
 };
 export declare function toWkt(geojson: unknown): string;
+export declare function fromWkt(wkt: string): unknown;
 export declare function toGeoJsonFeature(geometry: unknown, properties: Record<string, unknown>): unknown;
 export declare function featureCollectionToKml(fc: unknown, docName?: string): string;
 export declare function toGoogleMapsUrl(lat: number, lon: number): string;
